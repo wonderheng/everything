@@ -22,13 +22,18 @@ public class DataSourceFactory {
 
     private static DruidDataSource dataSource;
 
+    private DataSourceFactory(){}
+
+    //双重加锁单例
     public static DataSource dataSource(EverythingConfig everythingConfig) {
         if (dataSource == null) {
             synchronized(top.wonderheng.everything.core.dao.DataSourceFactory.class) {
                 if (dataSource == null) {
+                    //实例化
                     dataSource = new DruidDataSource();
-                    dataSource.setUrl("jdbc:h2:" + everythingConfig.getH2IndexFile());
                     dataSource.setDriverClassName("org.h2.Driver");
+                    //采用h2数据库，数据库以本地文件方式存储，无需username和password
+                    dataSource.setUrl("jdbc:h2:" + everythingConfig.getH2IndexFile());
                     dataSource.setTestWhileIdle(false);
                 }
             }
@@ -41,10 +46,12 @@ public class DataSourceFactory {
      * 初始化数据库
      */
     public static void databaseInit() {
+        //获取数据源
         DataSource dataSource = top.wonderheng.everything.core.dao.DataSourceFactory.dataSource(EverythingConfig.defaultConfig());
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
         ) {
+            //加载数据库文件，获取sql语句
             try (InputStream is = top.wonderheng.everything.core.dao.DataSourceFactory.class.getClassLoader().getResourceAsStream("database.sql");
                  InputStreamReader stream = new InputStreamReader(is);
                  BufferedReader reader = new BufferedReader(stream);
