@@ -54,29 +54,13 @@
 
 #### 7.1 命令
 
-```
->>help
-命令列表：
-退出：quit
-帮助：help
-索引：index
-搜索：search <name>
-```
-#### 7.2 搜索
+![](https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/1.png)
 
-```cmd
-欢迎使用，Everything
->>search java
-D:\__repository\javax
-D:\__repository\java3d
-D:\__download\app\java2-httpd-1.0.0.jar
-E:\worskpace\github\java2-httpd
-E:\worskpace\github\java2-httpd-blog
-E:\worskpace\github\java2-httpd-blog.zip
-D:\__repository\net\java
-E:\worskpace\github\java2-httpd.zip
-E:\worskpace\gitee\java-httpd
-E:\worskpace\github\java-httpd.zip
-more...
-```
+#### 7.2 建立索引
+
+![](https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/2.png)
+
+#### 7.3 搜索
+
+![](https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/3.png)
 
