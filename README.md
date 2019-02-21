@@ -54,13 +54,19 @@
 
 #### 7.1 命令
 
-![](https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/1.png)
+<div>
+	<img src="https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/1.png">  
+</div>
 
 #### 7.2 建立索引
 
-![](https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/2.png)
+<div>
+	<img src="https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/2.png">  
+</div>
 
 #### 7.3 搜索
 
-![](https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/3.png)
+<div>
+	<img src="https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/3.png">  
+</div>
 
