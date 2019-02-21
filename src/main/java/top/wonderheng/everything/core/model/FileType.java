@@ -5,40 +5,55 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.model
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:27
+ * 文件类型
+ * Author: wonderheng
+ * Created: 2019/2/14
  */
 public enum FileType {
-
-    IMG("png", "jpeg", "jpg", "gif"),
-    DOC("doc", "docx", "xls", "xlsx", "ppt", "pptx", "xls", "xlsx", "pdf", "txt"),
-    RAR("zip", "rar", "7z"),
-    BIN("exe", "msi", "sh", "jar"),
+    
+    IMG("png", "jpeg", "jpe", "gif"),
+    DOC("ppt", "pptx", "doc", "docx", "pdf"),
+    BIN("exe", "sh", "jar", "msi"),
+    ARCHIVE("zip", "rar"),
     OTHER("*");
-
+    
+    /**
+     * 对应的文件类型的扩展名集合
+     */
     private Set<String> extend = new HashSet<>();
-
+    
     FileType(String... extend) {
         this.extend.addAll(Arrays.asList(extend));
     }
-
+    
+    
+    /**
+     * 根据文件扩展名获取文件类型
+     *
+     * @param extend
+     * @return
+     */
     public static FileType lookup(String extend) {
-        for (FileType fileType : values()) {
+        for (FileType fileType : FileType.values()) {
             if (fileType.extend.contains(extend)) {
                 return fileType;
             }
         }
-        return OTHER;
+        return FileType.OTHER;
     }
-
+    
+    /**
+     * 根据文件类型名（String）获取文件类型对象
+     *
+     * @param name
+     * @return
+     */
     public static FileType lookupByName(String name) {
-        for (FileType fileType : values()) {
-            if (fileType.name().equalsIgnoreCase(name)) {
+        for (FileType fileType : FileType.values()) {
+            if (fileType.name().equals(name)) {
                 return fileType;
             }
         }
-        return OTHER;
+        return FileType.OTHER;
     }
 }

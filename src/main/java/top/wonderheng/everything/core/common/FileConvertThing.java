@@ -6,44 +6,42 @@ import top.wonderheng.everything.core.model.Thing;
 import java.io.File;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.common
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:13
+ * 辅助工具类：将File对象转换成Thing对象
+ * <p>
+ * Author: wonderheng
+ * Created: 2019/2/15
  */
-public class FileConvertThing {
-
+public final class FileConvertThing {
+    
+    private FileConvertThing() {
+    }
+    
     public static Thing convert(File file) {
         Thing thing = new Thing();
         thing.setName(file.getName());
-        thing.setPinyin(file.getName());
-        thing.setDepth(computeDepth(file.getPath()));
-        thing.setFileType(computeFileType(file.getPath()));
         thing.setPath(file.getAbsolutePath());
+        thing.setDepth(computeFileDepth(file));
+        thing.setFileType(computeFileType(file));
         return thing;
     }
-
-    private static int computeDepth(String path) {
-        int depth = -1;
-        for (char ch : path.toCharArray()) {
-            if (ch == File.separatorChar) {
-                depth++;
-            }
-        }
-        return depth;
+    
+    private static int computeFileDepth(File file) {
+        String[] segments = file.getAbsolutePath().split("\\\\");
+        return segments.length;
     }
-
-    private static FileType computeFileType(String path) {
-        File file = new File(path);
+    
+    private static FileType computeFileType(File file) {
         if (file.isDirectory()) {
             return FileType.OTHER;
+        }
+        String fileName = file.getName();
+        int index = fileName.lastIndexOf(".");
+        if (index != -1 && index < fileName.length() - 1) {
+            //abc.
+            String extend = fileName.substring(index + 1);
+            return FileType.lookup(extend);
         } else {
-            int index = path.lastIndexOf(".");
-            if (index == -1) {
-                return FileType.OTHER;
-            } else {
-                return FileType.lookup(path.substring(index + 1));
-            }
+            return FileType.OTHER;
         }
     }
 }

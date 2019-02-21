@@ -5,27 +5,27 @@ import top.wonderheng.everything.core.model.Condition;
 import top.wonderheng.everything.core.model.Thing;
 import top.wonderheng.everything.core.search.FileSearch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.search.impl
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:29
+ * 业务层
+ * Author: wonderheng
+ * Created: 2019/2/15
  */
 public class FileSearchImpl implements FileSearch {
-
+    
     private final FileIndexDao fileIndexDao;
-
+    
     public FileSearchImpl(FileIndexDao fileIndexDao) {
         this.fileIndexDao = fileIndexDao;
-
     }
-
+    
     @Override
     public List<Thing> search(Condition condition) {
-        return this.fileIndexDao.query(condition);
+        if (condition == null) {
+            return new ArrayList<>();
+        }
+        return this.fileIndexDao.search(condition);
     }
-
-
 }

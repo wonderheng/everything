@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.wonderheng</groupId>
     <artifactId>everything</artifactId>
     <version>1.0.0</version>
+    <!--打包格式jar-->
     <packaging>jar</packaging>
+    <!--项目名称-->
+    <name>everything</name>
 
+    <!--属性信息-->
     <properties>
         <encoding>UTF-8</encoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <java.version>1.8</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
     </properties>
 
+    <!--项目依赖-->
     <dependencies>
-        <!--lombok-->
+
+        <!--Lombok插件运行依赖的库-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
+            <version>1.18.6</version>
         </dependency>
-        <!--druid-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.2</version>
-        </dependency>
-        <!--h2-->
+
+        <!--H2数据库以及驱动（JDBC API）-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.197</version>
         </dependency>
-        <!--commons-io-->
+        <!--数据库的连接池（目的：提高数据库的访问效率）-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+        <!--版本比较低-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+
     </dependencies>
 
+    <!--配置构建的信息-->
     <build>
         <plugins>
             <!--编译插件-->
@@ -51,6 +61,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.6.1</version>
             </plugin>
+            <!--依赖管理插件-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -58,13 +69,14 @@
                 <executions>
                     <execution>
                         <id>copy</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
-                        <phase>package</phase>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <includeScope>compile</includeScope>
+                            <outputDirectory>
+                                ${project.build.directory}/lib
+                            </outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -73,66 +85,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0</version>
                 <configuration>
-                    <classifier>${style}</classifier>
                     <archive>
                         <manifest>
+                            <!--配置主类-->
                             <addClasspath>true</addClasspath>
-                            <addExtensions>true</addExtensions>
                             <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>${main}</mainClass>
+                            <mainClass>top.wonderheng.everything.cmd.EverythingCmdApp</mainClass>
                         </manifest>
-                        <manifestEntries>
-                            <Implementation-Title>${project.name}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor-Id>
-                                ${project.groupId}
-                            </Implementation-Vendor-Id>
-                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>make-zip</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>${project.artifactId}-${project.version}-${style}</finalName>
-                            <descriptors>
-                                <descriptor>src/main/assembly/assembly.xml</descriptor>
-                            </descriptors>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
-    <profiles>
-        <profile>
-            <id>cmd</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <style>cmd</style>
-                <main>top.wonderheng.everything.cmd.EverythingCmdApp</main>
-            </properties>
-        </profile>
-        <profile>
-            <id>ui</id>
-            <properties>
-                <style>ui</style>
-                <main>top.wonderheng.everything.ui.EverythingUiApp</main>
-            </properties>
-        </profile>
-    </profiles>
 </project>

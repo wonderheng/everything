@@ -3,13 +3,11 @@ package top.wonderheng.everything.core.interceptor;
 import top.wonderheng.everything.core.model.Thing;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.interceptor
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:25
+ * Author: wonderheng
+ * Created: 2019/2/16
  */
+@FunctionalInterface
 public interface ThingInterceptor {
-
-    void applyFile(Thing thing);
-
+    
+    void apply(Thing thing);
 }

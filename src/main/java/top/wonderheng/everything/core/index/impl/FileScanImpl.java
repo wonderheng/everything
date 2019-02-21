@@ -3,51 +3,49 @@ package top.wonderheng.everything.core.index.impl;
 import top.wonderheng.everything.config.EverythingConfig;
 import top.wonderheng.everything.core.index.FileScan;
 import top.wonderheng.everything.core.interceptor.FileInterceptor;
-import top.wonderheng.everything.core.interceptor.impl.FileIndexInterceptor;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.index.impl
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:18
+ * Author: wonderheng
+ * Created: 2019/2/15
  */
 public class FileScanImpl implements FileScan {
-
-    private List<FileInterceptor> interceptors = new LinkedList<>();
-
-    private EverythingConfig everythingConfig = EverythingConfig.defaultConfig();
-
+    
+    private EverythingConfig config = EverythingConfig.getInstance();
+    
+    private LinkedList<FileInterceptor> interceptors = new LinkedList<>();
+    
     @Override
     public void index(String path) {
         File file = new File(path);
-        if (!file.exists()) {
-            return;
-        }
-        for (String exclude : everythingConfig.getExcludePaths()) {
-            if (Paths.get(path).startsWith(exclude)) {
+        if (file.isFile()) {
+            //D:\a\b\abc.pdf  ->  D:\a\b
+            if (config.getExcludePath().contains(file.getParent())) {
                 return;
             }
-        }
-        if (file.isDirectory()) {
-            File[] list = file.listFiles();
-            if (list != null) {
-                for (File f : list) {
-                    index(f.getPath());
+        } else {
+            if (config.getExcludePath().contains(path)) {
+                return;
+            } else {
+                File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        index(f.getAbsolutePath());
+                    }
                 }
             }
         }
-        for (FileInterceptor interceptor : interceptors) {
-            interceptor.applyFile(file);
+        
+        //File Directory
+        for (FileInterceptor interceptor : this.interceptors) {
+            interceptor.apply(file);
         }
     }
-
+    
     @Override
-    public void interceptor(FileIndexInterceptor indexInterceptor) {
-        this.interceptors.add(indexInterceptor);
+    public void interceptor(FileInterceptor interceptor) {
+        this.interceptors.add(interceptor);
     }
 }

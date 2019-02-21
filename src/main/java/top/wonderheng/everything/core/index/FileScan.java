@@ -1,17 +1,24 @@
 package top.wonderheng.everything.core.index;
 
-import top.wonderheng.everything.core.interceptor.impl.FileIndexInterceptor;
+import top.wonderheng.everything.core.interceptor.FileInterceptor;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.index
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:20
+ * Author: wonderheng
+ * Created: 2019/2/15
  */
 public interface FileScan {
-
+    
+    /**
+     * 遍历Path
+     *
+     * @param path
+     */
     void index(String path);
-
-    void interceptor(FileIndexInterceptor indexInterceptor);
-
+    
+    /**
+     * 遍历的拦截器
+     *
+     * @param interceptor
+     */
+    void interceptor(FileInterceptor interceptor);
 }

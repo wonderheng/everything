@@ -1,6 +1,8 @@
 package top.wonderheng.everything.config;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.File;
 import java.nio.file.FileSystem;
@@ -10,88 +12,78 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.config
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:09
+ * Author: wonderheng
+ * Created: 2019/2/15
  */
-@Data
+@Getter
+@ToString
 public class EverythingConfig {
-
-    private static EverythingConfig everythingConfig;
-
+    
+    private static volatile EverythingConfig config;
+    
     /**
-     * 建立索引和监控的路径
+     * 建立索引的路径
      */
-    private final Set<String> indexPaths = new HashSet<>();
-
+    private Set<String> includePath = new HashSet<>();
     /**
-     * 排除的路径
+     * 排除索引文件的路径
      */
-    private final Set<String> excludePaths = new HashSet<>();
-
+    private Set<String> excludePath = new HashSet<>();
+    
     /**
-     * 最大近期文件数
+     * 检索最大的返回值数量
      */
-    private Integer maxRecentlyFile = 1024;
-
+    @Setter
+    private Integer maxReturn = 30;
+    
     /**
-     * 最大返回结果数
+     * 深度排序的规则，默认是升序
+     * order by dept asc limit 30 offset 0
      */
-    private Integer maxReturnFile = 30;
-
+    @Setter
+    private Boolean deptOrderAsc = true;
+    
+    
     /**
-     * 检索结果按照深度升序/降序，升序=true，降序=false，默认true
+     * H2数据库文件路径
      */
-    private boolean depthAsc = true;
-
-
-    /**
-     * 程序启动是否重建索引，是=true，否=false，默认false
-     */
-    private boolean rebuildIndex = false;
-
-    /**
-     * 索引文件
-     */
-    private String h2IndexFile = System.getProperty("user.home") + File.separator + "everything";
-
-
-    private final HandlerPath handlerPath;
-
+    private String h2IndexPath = System.getProperty("user.dir") + File.separator + "everything_plus";
+    
     private EverythingConfig() {
-        this.handlerPath = new HandlerPath(indexPaths, excludePaths);
     }
-
-    /**
-     * 获取默认的配置信息
-     *
-     * @return
-     */
-    public static EverythingConfig defaultConfig() {
-        if (everythingConfig == null) {
+    
+    private void initDefaultPathsConfig() {
+        //1.获取文件系统
+        FileSystem fileSystem = FileSystems.getDefault();
+        //遍历的目录
+        Iterable<Path> iterable = fileSystem.getRootDirectories();
+        iterable.forEach(path -> config.includePath.add(path.toString()));
+        //排除的目录
+        //windows ： C:\Windows C:\Program Files (x86) C:\Program Files  C:\ProgramData
+        //linux : /tmp /etc
+        String osname = System.getProperty("os.name");
+        if (osname.startsWith("Windows")) {
+            config.getExcludePath().add("C:\\Windows");
+            config.getExcludePath().add("C:\\Program Files (x86)");
+            config.getExcludePath().add("C:\\Program Files");
+            config.getExcludePath().add("C:\\ProgramData");
+            
+        } else {
+            config.getExcludePath().add("/tmp");
+            config.getExcludePath().add("/etc");
+            config.getExcludePath().add("/root");
+        }
+    }
+    
+    public static EverythingConfig getInstance() {
+        if (config == null) {
             synchronized(EverythingConfig.class) {
-                if (everythingConfig == null) {
-                    everythingConfig = new EverythingConfig();
-                    FileSystem fileSystems = FileSystems.getDefault();
-                    Iterable<Path> iterable = fileSystems.getRootDirectories();
-                    iterable.forEach(path -> everythingConfig.indexPaths.add(path.toString()));
-                    String os = System.getProperty("os.name");
-                    if (os.contains("Windows")) {
-                        everythingConfig.excludePaths.add("C:\\Windows");
-                        everythingConfig.excludePaths.add("C:\\Program Files (x86)");
-                        everythingConfig.excludePaths.add("C:\\Program Files");
-                        everythingConfig.excludePaths.add("C:\\ProgramData");
-                    } else {
-                        everythingConfig.excludePaths.add("/root");
-                    }
+                if (config == null) {
+                    config = new EverythingConfig();
+                    config.initDefaultPathsConfig();
                 }
             }
         }
-        return everythingConfig;
-    }
-
-    public static EverythingConfig getInstance() {
-        return defaultConfig();
+        return config;
     }
 }

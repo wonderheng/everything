@@ -3,24 +3,31 @@ package top.wonderheng.everything.core.model;
 import lombok.Data;
 
 /**
- * @BelongsProject: everything
- * @BelongsPackage: top.wonderheng.everything.core.model
- * @Author: WonderHeng
- * @CreateTime: 2018-11-15 21:28
+ * 文件属性信息索引之后的记录 Thing表示
+ * Author: wonderheng
+ * Created: 2019/2/14
  */
 @Data
 public class Thing {
-
+    
+    /**
+     * 文件名称（保留名称）
+     * File D:/a/b/hello.txt  -> hello.txt
+     */
     private String name;
-
-    private ThingType thingType;
-
-    private FileType fileType;
-
+    
+    /**
+     * 文件路径
+     */
     private String path;
-
-    private int depth;
-
-    private String pinyin;
-
+    
+    /**
+     * 文件路径深度
+     */
+    private Integer depth;
+    
+    /**
+     * 文件类型
+     */
+    private FileType fileType;
 }
