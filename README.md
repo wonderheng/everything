@@ -55,18 +55,21 @@
 #### 7.1 命令
 
 <div>
-	<img src="https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/1.png">  
+	<img src="img/1.png">  
 </div>
+
 
 #### 7.2 建立索引
 
 <div>
-	<img src="https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/2.png">  
+	<img src="img/2.png">  
 </div>
+
 
 #### 7.3 搜索
 
 <div>
-	<img src="https://wonderhengblog.oss-cn-beijing.aliyuncs.com/post/%E9%A1%B9%E7%9B%AE-everything/3.png">  
+	<img src="img/3.png">  
 </div>
+
 
